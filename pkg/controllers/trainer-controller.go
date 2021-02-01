@@ -35,8 +35,16 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 	ID, err:= strconv.ParseInt(trainerId, 0, 0)
 	if err != nil {
 		fmt.Println("Error while parsing")
+		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
-	trainerDetails, _:= models.GetTrainerById(ID)
+	trainerDetails, gorm:= models.GetTrainerById(ID)
+	if gorm.Error != nil {
+		fmt.Println("Record not found")
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	data, _ := json.Marshal(trainerDetails)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

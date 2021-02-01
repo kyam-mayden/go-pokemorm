@@ -45,7 +45,7 @@ func GetAllTrainers() []Trainer {
 
 func GetTrainerById(Id int64) (*Trainer , *gorm.DB){
 	var getTrainer Trainer
-	db:=db.Where("id = ?", Id).Find(&getTrainer)
+	db := db.Where("id = ?", Id).First(&getTrainer)
 	return &getTrainer, db
 }
 
