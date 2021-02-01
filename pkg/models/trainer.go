@@ -17,6 +17,7 @@ type Trainer struct {
 	id               uint `gorm:"primaryKey"`
 	FirstName         string
 	SecondName       string
+	HomeTown		 int64
 	FavouriteType    int64
 	FavouritePokemon int64
 	Evil             bool
@@ -31,10 +32,9 @@ func init() {
 	db.AutoMigrate(&Trainer{})
 }
 
-func (b *Trainer) CreateTrainer() *Trainer {
-	//db.NewRecord(b)
-	db.Create(&b)
-	return b
+func (b *Trainer) CreateTrainer() (*Trainer , *gorm.DB) {
+	db := db.Create(&b)
+	return b, db
 }
 
 func GetAllTrainers() []Trainer {
@@ -43,7 +43,7 @@ func GetAllTrainers() []Trainer {
 	return Trainers
 }
 
-func GetTrainerById(Id int64) (*Trainer , *gorm.DB){
+func GetTrainerById(Id int64) (*Trainer , *gorm.DB) {
 	var getTrainer Trainer
 	db := db.Where("id = ?", Id).First(&getTrainer)
 	return &getTrainer, db

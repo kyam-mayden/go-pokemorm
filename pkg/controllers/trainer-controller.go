@@ -5,20 +5,27 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/marty-crane/go-pokemorm/pkg/models"
+	"github.com/marty-crane/go-pokemorm/pkg/utils"
 	"net/http"
 	"strconv"
 )
 
-//var NewTrainer models.Trainer
+func CreateTrainer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 
-//func CreateTrainer(w http.ResponseWriter, r *http.Request) {
-//	CreateTrainer := &models.Trainer{}
-//	utils.ParseBody(r, CreateTrainer)
-//	b:= CreateTrainer.CreateTrainer()
-//	res,_ := json.Marshal(b)
-//	w.WriteHeader(http.StatusOK)
-//	w.Write(res)
-//}
+	CreateTrainer := &models.Trainer{}
+	utils.ParseBody(r, CreateTrainer)
+	b, db:= CreateTrainer.CreateTrainer()
+	if db.Error != nil {
+		fmt.Println("Conflicting record found")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	data,_ := json.Marshal(b)
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
+}
 
 func GetTrainer(w http.ResponseWriter, r *http.Request) {
 	newTrainers:= models.GetAllTrainers()
@@ -39,8 +46,8 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	trainerDetails, gorm:= models.GetTrainerById(ID)
-	if gorm.Error != nil {
+	trainerDetails, db:= models.GetTrainerById(ID)
+	if db.Error != nil {
 		fmt.Println("Record not found")
 		w.WriteHeader(http.StatusNotFound)
 		return
