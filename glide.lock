@@ -1,0 +1,8 @@
+hash: 2adb22876eeb68816a508ecc6a24a122da701167250a19edd332f512d0d62a65
+updated: 2021-02-01T09:01:00.839907066Z
+imports:
+- name: github.com/gorilla/mux
+  version: 98cb6bf42e086f6af920b965c38cacc07402d51b
+- name: gorm.io/gorm
+  version: 7f198ead0e716265acd3491925e340bfae758e95
+testImports: []
