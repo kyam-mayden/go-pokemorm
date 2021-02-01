@@ -1,1 +1,2 @@
 vendor/*
+cmd/main/main
