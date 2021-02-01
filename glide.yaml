@@ -4,3 +4,7 @@ import:
   version: ^1.8.0
 - package: gorm.io/gorm
   version: ^1.20.12
+- package: github.com/go-sql-driver/mysql
+  version: ^1.5.0
+- package: gorm.io/driver/mysql
+  version: ^1.0.4
