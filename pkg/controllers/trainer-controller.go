@@ -30,6 +30,7 @@ func GetTrainer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetTrainerById(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	trainerId := vars["trainerId"]
 	ID, err:= strconv.ParseInt(trainerId, 0, 0)
@@ -46,7 +47,6 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, _ := json.Marshal(trainerDetails)
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
