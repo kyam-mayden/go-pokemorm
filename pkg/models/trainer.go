@@ -14,8 +14,8 @@ func (Trainer) TableName() string {
 
 type Trainer struct {
 	gorm.Model
-	id               uint `gorm:"primaryKey"`
-	FirstName         string
+	ID               uint `gorm:"primaryKey"`
+	FirstName        string
 	SecondName       string
 	HomeTown		 int64
 	FavouriteType    int64

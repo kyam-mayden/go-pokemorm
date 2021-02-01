@@ -15,10 +15,19 @@ func CreateTrainer(w http.ResponseWriter, r *http.Request) {
 
 	CreateTrainer := &models.Trainer{}
 	utils.ParseBody(r, CreateTrainer)
+
+	if CreateTrainer.ID != 0 {
+		fmt.Printf("Auto increment ID specified in create %d", CreateTrainer.ID)
+		w.WriteHeader(http.StatusBadRequest)
+
+		return
+	}
+
 	b, db:= CreateTrainer.CreateTrainer()
 	if db.Error != nil {
 		fmt.Println("Conflicting record found")
 		w.WriteHeader(http.StatusBadRequest)
+
 		return
 	}
 
