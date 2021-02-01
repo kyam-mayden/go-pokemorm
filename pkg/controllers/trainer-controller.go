@@ -37,10 +37,10 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error while parsing")
 	}
 	trainerDetails, _:= models.GetTrainerById(ID)
-	res, _ := json.Marshal(trainerDetails)
+	data, _ := json.Marshal(trainerDetails)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
+	w.Write(data)
 }
 //
 //func UpdateTrainer(w http.ResponseWriter, r *http.Request) {
