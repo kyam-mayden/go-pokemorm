@@ -24,3 +24,9 @@ Get specific trainer
 ###### basic auth
 user: cheeseman
 password: cheese-cheese-cheese
+
+#### todo
+- GORM relationships
+- Extract application config - DB credentials, auth keys etc
+- UD
+- Routes for other tables/models
