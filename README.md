@@ -28,5 +28,6 @@ password: cheese-cheese-cheese
 #### todo
 - GORM relationships
 - Extract application config - DB credentials, auth keys etc
-- UD
+- Updates
+- Deletes
 - Routes for other tables/models
