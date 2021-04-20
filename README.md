@@ -31,3 +31,4 @@ password: cheese-cheese-cheese
 - Updates
 - Deletes
 - Routes for other tables/models
+- Migrations so we don't rely on Laravel Pokemorm
