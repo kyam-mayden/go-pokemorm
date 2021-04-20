@@ -32,3 +32,4 @@ password: cheese-cheese-cheese
 - Deletes
 - Routes for other tables/models
 - Migrations so we don't rely on Laravel Pokemorm
+- Integrate with a front end
