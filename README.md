@@ -29,6 +29,7 @@ password: cheese-cheese-cheese
 - Feature testing
 - GORM relationships
 - Extract application config - DB credentials, auth keys etc
+- Logging
 - Updates
 - Deletes
 - Routes for other tables/models
