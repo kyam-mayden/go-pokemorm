@@ -17,13 +17,16 @@ type Trainer struct {
 	ID               uint `gorm:"primaryKey"`
 	FirstName        string
 	SecondName       string
-	HomeTown		 int64
+	HomeTown         int64
 	FavouriteType    int64
 	FavouritePokemon int64
 	Evil             bool
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	DeletedAt        gorm.DeletedAt
+
+	// Relationships
+	HomeTownLocation Location `gorm:"foreignKey:HomeTown"`
 }
 
 func init() {
@@ -39,7 +42,7 @@ func (b *Trainer) CreateTrainer() (*Trainer , *gorm.DB) {
 
 func GetAllTrainers() []Trainer {
 	var Trainers []Trainer
-	db.Find(&Trainers)
+	db.Preload("HomeTownLocation").Find(&Trainers)
 	return Trainers
 }
 
