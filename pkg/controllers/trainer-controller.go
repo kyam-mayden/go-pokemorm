@@ -5,35 +5,34 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/marty-crane/go-pokemorm/pkg/models"
-	"github.com/marty-crane/go-pokemorm/pkg/utils"
 	"net/http"
 	"strconv"
 )
 
-func CreateTrainer(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+func CreateTrainer(responseWriter http.ResponseWriter, request *http.Request) {
+	responseWriter.Header().Set("Content-Type", "application/json")
+    newTrainer := &models.Trainer{}
 
-	CreateTrainer := &models.Trainer{}
-	utils.ParseBody(r, CreateTrainer)
+    err := json.NewDecoder(request.Body).Decode(&newTrainer)
+    if err != nil {
+        http.Error(responseWriter, err.Error(), http.StatusBadRequest)
+        fmt.Println("Error when creating new trainer: ", err.Error())
 
-	if CreateTrainer.ID != 0 {
-		fmt.Printf("Auto increment ID specified in create %d", CreateTrainer.ID)
-		w.WriteHeader(http.StatusBadRequest)
+        return
+    }
 
-		return
-	}
+	b, db:= newTrainer.CreateTrainer()
 
-	b, db:= CreateTrainer.CreateTrainer()
 	if db.Error != nil {
-		fmt.Println("Conflicting record found")
-		w.WriteHeader(http.StatusBadRequest)
+		fmt.Println("Error when creating new trainer: ", db.Error)
+		responseWriter.WriteHeader(http.StatusBadRequest)
 
 		return
 	}
 
 	data,_ := json.Marshal(b)
-	w.WriteHeader(http.StatusOK)
-	w.Write(data)
+	responseWriter.WriteHeader(http.StatusOK)
+	responseWriter.Write(data)
 }
 
 func GetTrainer(w http.ResponseWriter, r *http.Request) {
