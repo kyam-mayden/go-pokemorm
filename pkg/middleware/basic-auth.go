@@ -6,17 +6,17 @@ import (
 )
 
 func BasicAuthMiddleware(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		user, pass, ok := r.BasicAuth()
+	return func(responseWriter http.ResponseWriter, request *http.Request) {
+		user, pass, ok := request.BasicAuth()
 		fmt.Println("username: ", user)
 		fmt.Println("password: ", pass)
 		if !ok || !checkUsernameAndPassword(user, pass) {
-			w.Header().Set("WWW-Authenticate", `Basic realm="Please enter your username and password for this site"`)
-			w.WriteHeader(401)
-			w.Write([]byte("Unauthorised.\n"))
+			responseWriter.Header().Set("WWW-Authenticate", `Basic realm="Please enter your username and password for this site"`)
+			responseWriter.WriteHeader(401)
+			responseWriter.Write([]byte("Unauthorised.\n"))
 			return
 		}
-		handler(w, r)
+		handler(responseWriter, request)
 	}
 }
 
