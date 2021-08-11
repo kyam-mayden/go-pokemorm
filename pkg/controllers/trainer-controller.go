@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"github.com/marty-crane/go-pokemorm/pkg/models"
 	"net/http"
@@ -13,10 +14,16 @@ func CreateTrainer(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.Header().Set("Content-Type", "application/json")
     newTrainer := &models.Trainer{}
 
-    err := json.NewDecoder(request.Body).Decode(&newTrainer)
-    if err != nil {
-        http.Error(responseWriter, err.Error(), http.StatusBadRequest)
-        fmt.Println("Error when creating new trainer: ", err.Error())
+    dataError := json.NewDecoder(request.Body).Decode(&newTrainer)
+    if dataError != nil {
+        http.Error(responseWriter, dataError.Error(), http.StatusBadRequest)
+        fmt.Println("Error when creating new trainer: ", dataError.Error())
+
+        return
+    }
+
+    if !ValidateTrainerCreateRequest(request, newTrainer) {
+        responseWriter.WriteHeader(http.StatusBadRequest)
 
         return
     }
@@ -33,6 +40,20 @@ func CreateTrainer(responseWriter http.ResponseWriter, request *http.Request) {
 	data,_ := json.Marshal(b)
 	responseWriter.WriteHeader(http.StatusOK)
 	responseWriter.Write(data)
+}
+
+func ValidateTrainerCreateRequest(request *http.Request, newTrainer *models.Trainer) bool {
+    validator := validator.New()
+
+    err := validator.Struct(newTrainer)
+
+    if err != nil {
+        fmt.Println("Validation error when creating new trainer: ", err.Error())
+
+        return false
+    }
+
+    return true
 }
 
 func GetTrainer(w http.ResponseWriter, r *http.Request) {

@@ -15,11 +15,11 @@ func (Trainer) TableName() string {
 type Trainer struct {
 	gorm.Model
 	ID               uint `gorm:"primaryKey"`
-	FirstName        string
-	SecondName       string
-	HomeTown         int64
-	FavouriteType    int64
-	FavouritePokemon int64
+	FirstName        string `validate:"required,min=1,max=256"`
+	SecondName       string `validate:"required,min=1,max=256"`
+	HomeTown         int64 `validate:"required"`
+	FavouriteType    int64 `validate:"required"`
+	FavouritePokemon int64 `validate:"required"`
 	Evil             bool
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
