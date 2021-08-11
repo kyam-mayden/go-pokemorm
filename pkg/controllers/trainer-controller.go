@@ -3,57 +3,29 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"github.com/marty-crane/go-pokemorm/pkg/models"
+	"github.com/marty-crane/go-pokemorm/pkg/services"
 	"net/http"
 	"strconv"
 )
 
 func CreateTrainer(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.Header().Set("Content-Type", "application/json")
-    newTrainer := &models.Trainer{}
 
-    dataError := json.NewDecoder(request.Body).Decode(&newTrainer)
-    if dataError != nil {
-        http.Error(responseWriter, dataError.Error(), http.StatusBadRequest)
-        fmt.Println("Error when creating new trainer: ", dataError.Error())
+	trainerService := services.TrainerService{}
 
-        return
-    }
+	model, error := trainerService.CreateTrainer(request)
 
-    if !ValidateTrainerCreateRequest(request, newTrainer) {
-        responseWriter.WriteHeader(http.StatusBadRequest)
+	if error != nil {
+	    responseWriter.WriteHeader(http.StatusBadRequest)
 
-        return
-    }
-
-	b, db:= newTrainer.CreateTrainer()
-
-	if db.Error != nil {
-		fmt.Println("Error when creating new trainer: ", db.Error)
-		responseWriter.WriteHeader(http.StatusBadRequest)
-
-		return
+	    return
 	}
 
-	data,_ := json.Marshal(b)
+	data,_ := json.Marshal(model)
 	responseWriter.WriteHeader(http.StatusOK)
 	responseWriter.Write(data)
-}
-
-func ValidateTrainerCreateRequest(request *http.Request, newTrainer *models.Trainer) bool {
-    validator := validator.New()
-
-    err := validator.Struct(newTrainer)
-
-    if err != nil {
-        fmt.Println("Validation error when creating new trainer: ", err.Error())
-
-        return false
-    }
-
-    return true
 }
 
 func GetTrainer(w http.ResponseWriter, r *http.Request) {
