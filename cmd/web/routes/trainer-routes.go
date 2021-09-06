@@ -7,6 +7,7 @@ import (
 )
 
 var RegisterTrainerStoreRoutes = func(router *mux.Router) {
+	router.HandleFunc("/", handlers.RenderTrainers).Methods("GET")
 	router.Handle("/trainer", middleware.OAuthMiddleware(handlers.GetTrainer)).Methods("GET")
 	router.Handle("/trainer", middleware.OAuthMiddleware(handlers.CreateTrainer)).Methods("POST")
 	router.Handle("/trainer/{trainerId}", middleware.OAuthMiddleware(handlers.GetTrainerById)).Methods("GET")

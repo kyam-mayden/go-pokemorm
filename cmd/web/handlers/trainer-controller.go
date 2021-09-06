@@ -6,6 +6,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/marty-crane/go-pokemorm/pkg/models"
 	"github.com/marty-crane/go-pokemorm/pkg/services"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -58,6 +60,26 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
+
+func RenderTrainers(w http.ResponseWriter, r *http.Request) {
+    if r.URL.Path != "/" {
+        http.NotFound(w, r)
+        return
+    }
+
+    ts, err := template.ParseFiles("./ui/html/home.page.tmpl")
+    if err != nil {
+        log.Println(err.Error())
+        http.Error(w, "Internal Server Error", 500)
+        return
+    }
+
+    err = ts.Execute(w, nil)
+    if err != nil {
+    log.Println(err.Error())
+    http.Error(w, "Internal Server Error", 500) }
+}
+
 //
 //func UpdateTrainer(w http.ResponseWriter, r *http.Request) {
 //	var updateTrainer = &models.Trainer{}
