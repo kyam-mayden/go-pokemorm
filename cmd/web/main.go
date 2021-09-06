@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/marty-crane/go-pokemorm/pkg/routes"
+	"github.com/marty-crane/go-pokemorm/cmd/web/routes"
 )
 
 func main() {

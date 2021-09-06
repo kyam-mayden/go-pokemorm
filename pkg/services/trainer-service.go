@@ -38,6 +38,7 @@ func (b *TrainerService) CreateTrainer(request *http.Request) (*models.Trainer, 
 }
 
 func validateTrainerCreateRequest(request *http.Request, newTrainer *models.Trainer) bool {
+    // web specific logic, refactor out
     validator := validator.New()
 
     err := validator.Struct(newTrainer)
