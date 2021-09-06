@@ -1,12 +1,9 @@
 package models
 
 import (
-	"github.com/marty-crane/go-pokemorm/pkg/config"
 	"gorm.io/gorm"
 	"time"
 )
-
-var db *gorm.DB
 
 func (Trainer) TableName() string {
 	return "trainer"
@@ -30,8 +27,8 @@ type Trainer struct {
 }
 
 func init() {
-	config.Connect()
-	db = config.GetDB()
+	Connect()
+	db = GetDB()
 	db.AutoMigrate(&Trainer{})
 }
 
