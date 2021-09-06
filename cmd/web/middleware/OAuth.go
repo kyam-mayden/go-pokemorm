@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"fmt"
-	"net/http"
+    "fmt"
+    "github.com/marty-crane/go-pokemorm/pkg/config"
+    "net/http"
 )
 
 func OAuthMiddleware(handler http.HandlerFunc) http.HandlerFunc {
@@ -20,5 +21,5 @@ func OAuthMiddleware(handler http.HandlerFunc) http.HandlerFunc {
 }
 
 func checkAuthCredentials(apiKey string) bool {
-	return apiKey == "cheese-cheese-cheese"
+	return apiKey == config.Get("API_KEY")
 }
