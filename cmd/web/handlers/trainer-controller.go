@@ -61,11 +61,13 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func RenderTrainers(w http.ResponseWriter, r *http.Request) {
-    if r.URL.Path != "/" {
-        http.NotFound(w, r)
+func RenderTrainers(responseWriter http.ResponseWriter, request *http.Request) {
+    if request.URL.Path != "/" {
+        http.NotFound(responseWriter, request)
         return
     }
+
+    responseWriter.Header().Set("Content-Type", "text/html")
 
     files := []string{
         "./ui/html/home.page.tmpl",
@@ -76,14 +78,15 @@ func RenderTrainers(w http.ResponseWriter, r *http.Request) {
     ts, err := template.ParseFiles(files...)
     if err != nil {
         log.Println(err.Error())
-        http.Error(w, "Internal Server Error", 500)
+        http.Error(responseWriter, "Internal Server Error", 500)
         return
     }
 
-    err = ts.Execute(w, nil)
+    err = ts.Execute(responseWriter, nil)
     if err != nil {
-    log.Println(err.Error())
-    http.Error(w, "Internal Server Error", 500) }
+        log.Println(err.Error())
+        http.Error(responseWriter, "Internal Server Error", 500)
+    }
 }
 
 //
