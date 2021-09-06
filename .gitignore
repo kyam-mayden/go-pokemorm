@@ -1,2 +1,2 @@
 vendor/*
-cmd/main/main
+cmd/web/main
