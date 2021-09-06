@@ -31,11 +31,11 @@ func Connect() {
 }
 
 func getDSN() string {
-    databaseUser := config.Get("DATABASE_USER")
-    databasePassword := config.Get("DATABASE_PASSWORD")
-    databaseAddress := config.Get("DATABASE_ADDRESS")
-    databasePort := config.Get("DATABASE_PORT")
-    databaseName := config.Get("DATABASE_NAME")
+    databaseUser := config.Get("DATABASE_USER", "sail")
+    databasePassword := config.Get("DATABASE_PASSWORD", "password")
+    databaseAddress := config.Get("DATABASE_ADDRESS", "127.0.0.1")
+    databasePort := config.Get("DATABASE_PORT", "3306")
+    databaseName := config.Get("DATABASE_NAME", "pokemorm")
 
     return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
         databaseUser,

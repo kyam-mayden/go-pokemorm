@@ -17,7 +17,7 @@ func main() {
 	routes.RegisterAssetRoutes(r)
 	http.Handle("/", r)
 
-    port := config.Get("WEB_PORT")
+    port := config.Get("WEB_PORT", ":8080")
 
 	fmt.Printf("Serving on port %s", port)
 	fmt.Println()
