@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/marty-crane/go-pokemorm/pkg/config"
 	"gorm.io/gorm"
 )
 
@@ -17,7 +16,7 @@ type Location struct {
 }
 
 func init() {
-	config.Connect()
-	db = config.GetDB()
+	Connect()
+	db = GetDB()
 	db.AutoMigrate(&Location{})
 }

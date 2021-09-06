@@ -1,36 +1,31 @@
-package controllers
+package handlers
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/marty-crane/go-pokemorm/pkg/models"
+	"github.com/marty-crane/go-pokemorm/pkg/services"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
 
 func CreateTrainer(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.Header().Set("Content-Type", "application/json")
-    newTrainer := &models.Trainer{}
 
-    err := json.NewDecoder(request.Body).Decode(&newTrainer)
-    if err != nil {
-        http.Error(responseWriter, err.Error(), http.StatusBadRequest)
-        fmt.Println("Error when creating new trainer: ", err.Error())
+	trainerService := services.TrainerService{}
 
-        return
-    }
+	model, error := trainerService.CreateTrainer(request)
 
-	b, db:= newTrainer.CreateTrainer()
+	if error != nil {
+	    responseWriter.WriteHeader(http.StatusBadRequest)
 
-	if db.Error != nil {
-		fmt.Println("Error when creating new trainer: ", db.Error)
-		responseWriter.WriteHeader(http.StatusBadRequest)
-
-		return
+	    return
 	}
 
-	data,_ := json.Marshal(b)
+	data,_ := json.Marshal(model)
 	responseWriter.WriteHeader(http.StatusOK)
 	responseWriter.Write(data)
 }
@@ -65,6 +60,35 @@ func GetTrainerById(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
+
+func RenderTrainers(responseWriter http.ResponseWriter, request *http.Request) {
+    if request.URL.Path != "/" {
+        http.NotFound(responseWriter, request)
+        return
+    }
+
+    responseWriter.Header().Set("Content-Type", "text/html")
+
+    files := []string{
+        "./ui/html/home.page.tmpl",
+        "./ui/html/base.layout.tmpl",
+        "./ui/html/footer.partial.tmpl",
+    }
+
+    ts, err := template.ParseFiles(files...)
+    if err != nil {
+        log.Println(err.Error())
+        http.Error(responseWriter, "Internal Server Error", 500)
+        return
+    }
+
+    err = ts.Execute(responseWriter, nil)
+    if err != nil {
+        log.Println(err.Error())
+        http.Error(responseWriter, "Internal Server Error", 500)
+    }
+}
+
 //
 //func UpdateTrainer(w http.ResponseWriter, r *http.Request) {
 //	var updateTrainer = &models.Trainer{}
