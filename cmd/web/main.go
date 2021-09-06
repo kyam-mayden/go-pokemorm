@@ -11,7 +11,8 @@ import (
 
 func main() {
 	r := mux.NewRouter()
-	routes.RegisterTrainerStoreRoutes(r)
+	routes.RegisterTrainerRoutes(r)
+	routes.RegisterAssetRoutes(r)
 	http.Handle("/", r)
 
 	fmt.Println("Serving on port 8080")
