@@ -28,7 +28,6 @@ password: cheese-cheese-cheese
 #### todo
 - Feature testing
 - GORM relationships
-- Extract application config - DB credentials, auth keys etc
 - Logging
 - Updates
 - Deletes
