@@ -9,6 +9,7 @@ import (
 
 	"github.com/marty-crane/go-pokemorm/cmd/web/routes"
 	"github.com/marty-crane/go-pokemorm/pkg/config"
+	"github.com/marty-crane/go-pokemorm/pkg/logger"
 )
 
 func main() {
@@ -19,7 +20,11 @@ func main() {
 
     port := config.Get("WEB_PORT", ":8080")
 
-	fmt.Printf("Serving on port %s", port)
+	logger.Info(fmt.Sprintf("Serving on port %s", port))
+
 	fmt.Println()
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("localhost%s", port), r))
+	err := http.ListenAndServe(fmt.Sprintf("localhost%s", port), r);
+
+	log.Fatal(err)
+	logger.Fatal(fmt.Sprint(err))
 }
